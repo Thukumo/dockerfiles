@@ -9,10 +9,10 @@ RUN curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | gpg -o /usr/s
 && echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] http://repo.mongodb.org/apt/debian bookworm/mongodb-org/7.0 main" \
 | tee /etc/apt/sources.list.d/mongodb-org-7.0.list \
 && apt update -y && apt install mongodb-org -y
-VOLUME /data/db
+VOLUME /db
 RUN cat <<EOF > /etc/mongod.conf
 storage:
-  dbPath: /data/db
+  dbPath: /db
 net:
   bindIp: 127.0.0.1 
   port: 27017
@@ -242,7 +242,7 @@ RUN cat <<EOF > config.json
   "version": 14
 }
 EOF
-RUN chmod +x start.sh && chmod 777 /etc/mongod.conf
+RUN chmod +x start.sh
 EXPOSE 443
 EXPOSE 22102/udp
 CMD ["bash", "/LunaGC_5.0.0/start.sh"]
