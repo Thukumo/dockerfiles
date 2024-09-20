@@ -18,10 +18,10 @@ net:
   port: 27017
 EOF
 COPY <<EOF start.sh
-mongod --config /etc/mongod.conf --fork --logpath /log/mongodb.log
+mongod --config /etc/mongod.conf --fork --logpath /var/log/mongodb.log
 java -jar /LunaGC_5.0.0/LunaGC-5.0.0.jar
 EOF
-COPY <<EOF config.json
+RUN cat <<EOF > config.json
 {
   "folderStructure": {
     "resources": "./resources/",
