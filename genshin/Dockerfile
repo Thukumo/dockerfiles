@@ -18,7 +18,7 @@ net:
   port: 27017
 EOF
 COPY <<EOF start.sh
-mongod --config /etc/mongod.conf --fork --logpath /var/log/mongodb.log
+mongod --config /etc/mongod.conf --fork --logpath /db/mongodb.log
 java -jar /LunaGC_5.0.0/LunaGC-5.0.0.jar
 EOF
 RUN cat <<EOF > config.json
