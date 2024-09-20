@@ -19,7 +19,7 @@ net:
 EOF
 RUN cat <<EOF > start.sh
 #!/bin/bash
-mongod --config /etc/mongod.conf --fork --logpath /var/log/mongodb.log
+mongod --config /etc/mongod.conf --fork --logpath /log/mongodb.log
 java -jar /LunaGC_5.0.0/LunaGC-5.0.0.jar
 EOF
 RUN cat <<EOF > config.json
