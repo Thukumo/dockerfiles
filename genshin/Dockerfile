@@ -10,19 +10,18 @@ RUN curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | gpg -o /usr/s
 | tee /etc/apt/sources.list.d/mongodb-org-7.0.list \
 && apt update -y && apt install mongodb-org -y
 VOLUME /db
-RUN cat <<EOF > /etc/mongod.conf
+COPY <<EOF /etc/mongod.conf
 storage:
   dbPath: /db
 net:
   bindIp: 127.0.0.1 
   port: 27017
 EOF
-RUN cat <<EOF > start.sh
-#!/bin/bash
+COPY <<EOF start.sh
 mongod --config /etc/mongod.conf --fork --logpath /log/mongodb.log
 java -jar /LunaGC_5.0.0/LunaGC-5.0.0.jar
 EOF
-RUN cat <<EOF > config.json
+COPY <<EOF config.json
 {
   "folderStructure": {
     "resources": "./resources/",
@@ -242,7 +241,6 @@ RUN cat <<EOF > config.json
   "version": 14
 }
 EOF
-RUN chmod +x start.sh
 EXPOSE 443
 EXPOSE 22102/udp
 CMD ["bash", "/LunaGC_5.0.0/start.sh"]
