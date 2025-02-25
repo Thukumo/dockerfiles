@@ -1,0 +1,20 @@
+services:
+  client:
+    build:
+      context: .
+      dockerfile: client-Dockerfile
+    ports:
+      - "6080:6080"
+    shm_size: 2gb
+    environment:
+      - HTTPS_PROXY=http://proxy:8118
+      - HTTP_PROXY=http://proxy:8118
+
+    depends_on:
+      - proxy
+  proxy:
+    container_name: proxy
+    build :
+      context: .
+      dockerfile: proxy-Dockerfile
+    restart: on-failure

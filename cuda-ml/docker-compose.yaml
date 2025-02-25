@@ -1,0 +1,18 @@
+services:
+  lab:
+    container_name: jupyter
+    restart: unless-stopped
+    build: .
+    ports:
+      - 8888:8888
+    volumes:
+      - jupyter_data:/work
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+              driver: nvidia
+volumes:
+  jupyter_data:
+    external: true

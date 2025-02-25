@@ -2,8 +2,10 @@ FROM debian:stable-slim
 WORKDIR /
 RUN apt update -y && apt install openjdk-17-jdk gnupg curl npm -y
 RUN git clone https://github.com/Kei-Luna/LunaGC_5.0.0 && cd LunaGC_5.0.0 \
-&& bash gradlew && git clone https://github.com/Kei-Luna/LunaGC_Resources_5.0.0 resources \
-&& echo "org.gradle.vfs.watch=true" >> gradle.properties && bash gradlew wrapper && bash gradlew jar
+&& git clone https://github.com/Kei-Luna/LunaGC_Resources_5.0.0 resources \
+&& echo "org.gradle.vfs.watch=true" >> gradle.properties \
+#&& bash gradlew wrapper \
+&& bash gradlew jar --no-daemon
 WORKDIR /LunaGC_5.0.0
 RUN curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor \
 && echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] http://repo.mongodb.org/apt/debian bookworm/mongodb-org/7.0 main" \

@@ -1,0 +1,3 @@
+FROM dperson/torproxy
+
+COPY ./torrc /etc/tor/torrc

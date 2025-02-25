@@ -1,0 +1,35 @@
+FROM nvidia/cuda:12.8.0-cudnn-devel-ubuntu24.04
+
+
+RUN apt update && apt install -y python3 python3-pip wget git && useradd -m -s /bin/bash jupyter && mkdir /work && chown jupyter:jupyter /work
+USER jupyter
+WORKDIR /work
+ENV PATH="${PATH}:/home/jupyter/.local/bin"
+
+# python, jupyterlab
+RUN pip install --break-system-packages jupyterlab jupyterlab-language-pack-ja-jp
+
+# pytorch
+RUN pip install --break-system-packages torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
+RUN pip install --break-system-packages pytorch-lightning
+
+RUN pip install --break-system-packages numpy pandas matplotlib scikit-learn scikit-image opencv-python seaborn tqdm
+
+# tensorflow
+RUN pip install --break-system-packages tensorflow
+
+# QSharp
+RUN wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh && chmod +x dotnet-install.sh && ./dotnet-install.sh --channel 6.0 && rm -f dotnet-install.sh
+USER root
+RUN apt install -y libicu-dev
+USER jupyter
+ENV PATH="${PATH}:/home/jupyter/.dotnet:/home/jupyter/.dotnet/tools"
+ENV DOTNET_ROOT="/home/jupyter/.dotnet"
+RUN dotnet tool install -g Microsoft.Quantum.IQSharp && dotnet iqsharp install --user && pip install --break-system-packages qsharp-jupyterlab
+#おまけ
+RUN pip install --break-system-packages azure-quantum qsharp
+
+RUN pip cache purge
+
+EXPOSE 8888
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--no-browser", "--IdentityProvider.token=''"]
