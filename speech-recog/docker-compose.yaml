@@ -1,0 +1,14 @@
+services:
+  lab:
+    container_name: speech_recog
+    restart: no
+    build: .
+    volumes:
+      - ./raw:/work/raw
+      - ./res:/work/res
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+              driver: nvidia
